@@ -47,12 +47,14 @@ fn main() {
     // Dispatch threads
     let threadgroup_size = MTLSize::new(16, 1, 1);
     let threadgroup_count = MTLSize::new(
-        (array_size + threadgroup_size.width as usize - 1) / threadgroup_size.width as usize,
+        (array_size as u64 + threadgroup_size.width - 1) / threadgroup_size.width,
         1,
         1,
     );
+    
+    
 
-    encoder.dispatch_threadgroups(threadgroup_count, threadgroup_size);
+    encoder.dispatch_thread_groups(threadgroup_count, threadgroup_size);
     encoder.end_encoding();
 
     // Commit and wait for completion
